@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Fun Facts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .fact-card {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fact-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .fact-text {
+            font-size: 1.3em;
+            color: #333;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .fact-category {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            text-align: center;
+            margin: 0 auto;
+            margin-bottom: 15px;
+        }
+
+        .button-container {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            background: #f0f0f0;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .counter {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎲 Fun Facts</h1>
+            <p>Click the button below to discover amazing facts!</p>
+        </div>
+
+        <div class="fact-card">
+            <div class="fact-category" id="category">Science</div>
+            <div class="fact-icon" id="icon">🔬</div>
+            <div class="fact-text" id="factText">
+                Click "Get New Fact" to discover an amazing fun fact!
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button onclick="getNewFact()">Get New Fact</button>
+            <button onclick="getFavorite()">❤️ My Favorites</button>
+        </div>
+
+        <div class="counter">
+            <span id="counter">Facts seen: 0</span>
+        </div>
+    </div>
+
+    <script>
+        const facts = [
+            {
+                category: "Science",
+                icon: "🔬",
+                text: "Honey never spoils. Archaeologists have found 3,000-year-old honey in Egyptian tombs that was still perfectly edible!"
+            },
+            {
+                category: "Animals",
+                icon: "🐙",
+                text: "Octopuses have three hearts! Two pump blood to the gills, while the third pumps it to the rest of the body."
+            },
+            {
+                category: "Space",
+                icon: "🌌",
+                text: "A day on Venus is longer than a year on Venus. It takes Venus 243 Earth days to rotate on its axis, but only 225 days to orbit the sun!"
+            },
+            {
+                category: "History",
+                icon: "👑",
+                text: "Cleopatra lived closer to the invention of the iPhone than to the building of the Great Pyramid of Giza."
+            },
+            {
+                category: "Biology",
+                icon: "🧬",
+                text: "Your body contains enough iron to make a nail, enough calcium to build a bone, and enough phosphorus to strike a match."
+            },
+            {
+                category: "Geography",
+                icon: "🌍",
+                text: "Russia has 11 time zones, more than any other country in the world."
+            },
+            {
+                category: "Animals",
+                icon: "🦑",
+                text: "Squids can taste with their arms. They have taste receptors all over their tentacles!"
+            },
+            {
+                category: "Science",
+                icon: "⚛️",
+                text: "If you could drive to space, it would take about 1 hour and 30 minutes at highway speed to reach the edge of the atmosphere."
+            },
+            {
+                category: "Nature",
+                icon: "🦅",
+                text: "Eagles can see fish in the water from over a mile away and can dive at speeds up to 150 mph."
+            },
+            {
+                category: "Technology",
+                icon: "💻",
+                text: "The first webcam was invented to monitor a coffee pot in a computer lab at Cambridge University!"
+            },
+            {
+                category: "Human Body",
+                icon: "👁️",
+                text: "Your nose can remember 50,000 different scents."
+            },
+            {
+                category: "Animals",
+                icon: "🦁",
+                text: "A lion's roar can be heard from 5 miles away."
+            }
+        ];
+
+        let currentFactIndex = -1;
+        let factsSeen = 0;
+        let favorites = [];
+
+        function getNewFact() {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            currentFactIndex = randomIndex;
+            const fact = facts[randomIndex];
+
+            document.getElementById('category').textContent = fact.category;
+            document.getElementById('icon').textContent = fact.icon;
+            document.getElementById('factText').textContent = fact.text;
+
+            factsSeen++;
+            document.getElementById('counter').textContent = `Facts seen: ${factsSeen}`;
+        }
+
+        function getFavorite() {
+            if (currentFactIndex === -1) {
+                alert('Get a fact first before favoriting!');
+                return;
+            }
+
+            const currentFact = facts[currentFactIndex];
+            const isFavorited = favorites.some(f => f.text === currentFact.text);
+
+            if (!isFavorited) {
+                favorites.push(currentFact);
+                alert('✅ Added to favorites!');
+            } else {
+                favorites = favorites.filter(f => f.text !== currentFact.text);
+                alert('❌ Removed from favorites!');
+            }
+
+            if (favorites.length > 0) {
+                console.log('Your favorites:', favorites);
+            }
+        }
+
+        // Load a random fact on page load
+        window.addEventListener('load', getNewFact);
+    </script>
+</body>
+</html>
